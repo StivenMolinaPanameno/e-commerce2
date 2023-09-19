@@ -22,9 +22,9 @@ public class EcommerceApplication {
 	}
 
 
-
-		/*@Autowired
-		PasswordEncoder passwordEncoder;
+	/*
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	@Autowired
 	IUserService userRepository;
 
@@ -53,8 +53,21 @@ public class EcommerceApplication {
 							.build()))
 					.build();
 
+			UserEntity user3 = UserEntity.builder()
+					.email("chris@gmail.com")
+					.name("chris")
+					.enabled(true)
+					.username("chrislazo")
+					.password(passwordEncoder.encode("123456"))
+					.roles(Set.of(RoleEntity.builder()
+							.name(ERole.valueOf(ERole.CUSTOMER.name()))
+							.build()))
+					.build();
+
 			userRepository.save(user);
 			userRepository.save(user2);
+			userRepository.save(user3);
+
 
 		};
 	}*/

@@ -45,7 +45,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
         return httpSecurity
                 .csrf(config->config.disable())
                 .authorizeHttpRequests(auth->{
-                    auth.requestMatchers("/hello").permitAll();
+                    auth.requestMatchers("/hello", "/v3/**", "/swagger-ui/**").permitAll();
                     auth.anyRequest().authenticated();
 
                 })
