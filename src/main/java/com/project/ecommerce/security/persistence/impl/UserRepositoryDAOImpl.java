@@ -3,6 +3,7 @@ package com.project.ecommerce.security.persistence.impl;
 import com.project.ecommerce.security.entities.UserEntity;
 import com.project.ecommerce.security.persistence.IUserRepositoryDAO;
 import com.project.ecommerce.security.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,7 @@ public class UserRepositoryDAOImpl implements IUserRepositoryDAO {
     public void disableById(Long id) {
         userRepository.disableById(id);
     }
-
+    @Transactional
     @Override
     public void disableByUsername(String username) {
         userRepository.disableByName(username);

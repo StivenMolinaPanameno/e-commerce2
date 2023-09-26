@@ -4,6 +4,7 @@ package com.project.ecommerce.service.impl;
 import com.project.ecommerce.entities.Cart;
 import com.project.ecommerce.entities.Order;
 import com.project.ecommerce.entities.OrderDetail;
+import com.project.ecommerce.exception.NotProducts;
 import com.project.ecommerce.persistence.IOrderDAO;
 import com.project.ecommerce.security.entities.UserEntity;
 import com.project.ecommerce.security.repository.UserRepository;
@@ -11,6 +12,9 @@ import com.project.ecommerce.service.ICartService;
 import com.project.ecommerce.service.IOrderDetailService;
 import com.project.ecommerce.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -53,8 +57,8 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public List<Order> findAll() {
-        return orderDAO.findAll();
+    public Page<Order> findAll(Pageable pageable) {
+        return orderDAO.findAll(pageable);
     }
 
 
@@ -65,22 +69,26 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public void createOrder(String username) {
+    public void createOrder(String username) throws NotProducts {
         Optional<UserEntity> userEntityOptional = userRepository.findByUsername(username);
 
         if (userEntityOptional.isPresent()) {
             UserEntity user = userEntityOptional.get();
             List<Cart> shoppingCartList = cartService.findByUserEntityUsername(username);
+            if(!shoppingCartList.isEmpty()){
+                BigDecimal total = calculateTotal(shoppingCartList);
 
-            BigDecimal total = calculateTotal(shoppingCartList);
+                Order order = createOrderEntity(total, user);
 
-            Order order = createOrderEntity(total, user);
+                Order savedOrder = orderDAO.save(order);
 
-            Order savedOrder = orderDAO.save(order);
+                saveOrderDetails(savedOrder, shoppingCartList);
 
-            saveOrderDetails(savedOrder, shoppingCartList);
+                cartService.cleanCartByUserId(user.getId());
+            }else {
+                throw new NotProducts("Add Products");
+            }
 
-            cartService.cleanCartByUserId(user.getId());
         }
     }
 

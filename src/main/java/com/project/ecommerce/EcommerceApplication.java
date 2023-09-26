@@ -19,44 +19,11 @@ public class EcommerceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcommerceApplication.class, args);
+
 	}
 
 
 
-		/*@Autowired
-		PasswordEncoder passwordEncoder;
-	@Autowired
-	IUserService userRepository;
 
-	@Bean
-	CommandLineRunner init()
-	{
-		return args -> {
-			UserEntity user = UserEntity.builder()
-					.email("stiven@gmail.com")
-					.name("Stiven")
-					.enabled(true)
-					.username("stivenmolina")
-					.password(passwordEncoder.encode("1234"))
-					.roles(Set.of(RoleEntity.builder()
-							.name(ERole.valueOf(ERole.ADMIN.name()))
-							.build()))
-					.build();
-			UserEntity user2 = UserEntity.builder()
-					.email("molina@gmail.com")
-					.name("Ramiro")
-					.enabled(true)
-					.username("ronaldinho")
-					.password(passwordEncoder.encode("12345"))
-					.roles(Set.of(RoleEntity.builder()
-							.name(ERole.valueOf(ERole.CUSTOMER.name()))
-							.build()))
-					.build();
-
-			userRepository.save(user);
-			userRepository.save(user2);
-
-		};
-	}*/
 
 }

@@ -11,6 +11,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -88,12 +92,19 @@ public class OrderServiceImplTest {
     @Test
     public void findAllTest() {
         List<Order> expectedOrders = Arrays.asList(new Order(), new Order());
-        when(mockOrderDAO.findAll()).thenReturn(expectedOrders);
+        Pageable pageable = PageRequest.of(0, 5);
 
-        List<Order> result = orderService.findAll();
+        // Simula la respuesta de una página de órdenes
+        Page<Order> page = new PageImpl<>(expectedOrders, pageable, expectedOrders.size());
+        when(mockOrderDAO.findAll(pageable)).thenReturn(page);
+
+        Page<Order> resultPage = orderService.findAll(pageable);
+        List<Order> result = resultPage.getContent();
 
         assertEquals(expectedOrders, result);
+        assertEquals(expectedOrders.size(), resultPage.getTotalElements());
     }
+
 
     @Test
     public void findActiveOrdersByUsernameTest() {

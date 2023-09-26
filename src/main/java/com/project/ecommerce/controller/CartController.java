@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class CartController {
     ICartService cartService;
 
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping()
     public ResponseEntity<?> getListByClient(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -29,13 +31,14 @@ public class CartController {
         return new ResponseEntity<>(cartService.countByUserEntityId(id), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/addProduct")
     public ResponseEntity<?> addProdudct(@Valid @RequestBody CartDTO cartDTO, BindingResult bindingResult) throws UserNotFoundException {
         if(bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body("Invalid Fields");
         }
         cartService.addProduct(cartDTO);
-        return ResponseEntity.ok(cartDTO);
+        return ResponseEntity.ok("Product added");
 
     }
     @DeleteMapping("/clean/{item_id}")

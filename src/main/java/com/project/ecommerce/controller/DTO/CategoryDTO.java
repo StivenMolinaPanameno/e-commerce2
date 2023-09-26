@@ -1,5 +1,6 @@
 package com.project.ecommerce.controller.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Builder
@@ -10,6 +11,7 @@ import lombok.*;
 public class CategoryDTO {
 
     private String name;
+
     private Boolean enabled;
 
 }

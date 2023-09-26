@@ -1,4 +1,5 @@
 package com.project.ecommerce.controller.DTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.ecommerce.entities.Category;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -23,5 +24,6 @@ public class ProductDTO {
     @NotNull
     private Category category;
     @NotNull
+    @JsonIgnore
     private Boolean enabled;
 }

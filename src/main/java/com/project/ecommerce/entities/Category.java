@@ -20,8 +20,6 @@ public class Category {
     private Long id;
     @NotBlank
     private String name;
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JsonIgnore
-    private List<Product> productsList = new ArrayList<>();
+@JsonIgnore
     private Boolean enabled;
 }

@@ -35,16 +35,6 @@ public class ProductServiceImplTest {
         assertEquals(expectedProducts, result);
     }
 
-    @Test
-    public void findByCategoryTest() {
-        String category = "TestCategory";
-        List<Product> expectedProducts = Arrays.asList(new Product(), new Product());
-        when(mockProductDAO.findByCategory(category)).thenReturn(expectedProducts);
-
-        List<Product> result = productService.findByCategory(category);
-
-        assertEquals(expectedProducts, result);
-    }
 
     @Test
     public void findByIdTest() {

@@ -23,10 +23,6 @@ public class ProductServiceImpl implements IProductService {
     public Page<Product> findAllByEnabledTrue(Pageable pageable) {
         return productDAO.findAllByEnabledTrue(pageable);
     }
-    @Override
-    public List<Product> findByCategory(String category) {
-        return productDAO.findByCategory(category);
-    }
 
     @Override
     public Optional<Product> findById(Long id) {

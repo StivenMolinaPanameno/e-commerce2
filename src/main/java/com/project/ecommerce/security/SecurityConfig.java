@@ -46,6 +46,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
                 .csrf(config->config.disable())
                 .authorizeHttpRequests(auth->{
                     auth.requestMatchers("/hello").permitAll();
+                    auth.requestMatchers("createUser").permitAll();
                     auth.anyRequest().authenticated();
 
                 })

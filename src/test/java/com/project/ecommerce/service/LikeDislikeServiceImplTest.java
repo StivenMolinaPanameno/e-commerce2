@@ -25,8 +25,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LikeDislikeServiceImplTest {
-    @Mock
-    private SecurityContextHolder securityContextHolder;
+
 
     @Mock
     private IUserRepositoryDAO userRepository;
@@ -71,7 +70,6 @@ public class LikeDislikeServiceImplTest {
         verify(userRepository).findByUsername(username);
         verify(productService).findById(productId);
 
-        // No es necesario verificar llamadas a likeDislikeDAO en este método
     }
 
     @Test

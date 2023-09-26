@@ -12,10 +12,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateUserDTO {
+    private Long id;
     @NotBlank
     private String name;
-    @NotBlank
-    private String lastName;
+
     @Email
     private String email;
     @NotBlank

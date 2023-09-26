@@ -4,11 +4,13 @@ import com.project.ecommerce.controller.DTO.ProductDTO;
 import com.project.ecommerce.entities.Product;
 import com.project.ecommerce.service.IProductService;
 import jakarta.validation.Valid;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,14 +77,17 @@ public class ProductController {
                 .map(this::convertToDto);
         return ResponseEntity.ok(productList);
     }
-    @GetMapping("/findByCategory/{category}")
-    public ResponseEntity<?> findByCategory(@PathVariable String category){
-        List<ProductDTO> productList =  service.findByCategory(category).stream()
-                .map(this::convertToDto)
-                .toList();
-        return ResponseEntity.ok(productList);
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        try{
+            service.delete(id);
+            return ResponseEntity.ok("Product Deleted");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e);
+        }
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductDTO productDTO){
         Optional<Product> productOptional = service.findById(id);

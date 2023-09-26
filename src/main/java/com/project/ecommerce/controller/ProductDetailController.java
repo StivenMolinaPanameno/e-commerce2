@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ import java.util.Optional;
 public class ProductDetailController {
     @Autowired
     IProductDetailService service;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/saveDetail")
     public ResponseEntity<?> save(
             @Valid @RequestBody ProductDetailDTO productDetailDTO, BindingResult bindingResult){
@@ -48,7 +49,7 @@ public class ProductDetailController {
 
 
     }
-
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/findDetail/{id}")
     public ResponseEntity<?> findDetailProduct(@PathVariable Long id){
         Optional<ProductDetail> detail = service.findByProductId(id);

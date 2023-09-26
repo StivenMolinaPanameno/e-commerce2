@@ -25,8 +25,9 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnore
     private Category category;
+    @JsonIgnore
     private Boolean enabled;
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "product", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JsonIgnore
     private ProductDetail productDetail;
 }

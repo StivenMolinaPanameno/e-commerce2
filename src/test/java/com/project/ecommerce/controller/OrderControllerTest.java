@@ -1,6 +1,7 @@
 package com.project.ecommerce.controller;
 
 import com.project.ecommerce.entities.Order;
+import com.project.ecommerce.exception.NotProducts;
 import com.project.ecommerce.service.IOrderService;
 import org.junit.Test;
 
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Arrays;
 import  java.util.List;
@@ -30,7 +32,7 @@ public class OrderControllerTest {
     IOrderService orderService;
 
     @Test
-    public void testCreateOrder() {
+    public void testCreateOrder() throws NotProducts {
         // Mock del contexto de seguridad
         SecurityContext securityContext = mock(SecurityContext.class);
         Authentication authentication = mock(Authentication.class);
@@ -46,6 +48,22 @@ public class OrderControllerTest {
         verify(orderService, times(1)).createOrder("testUser");
     }
 
+
+
+    @Test
+    @WithMockUser(roles = "CUSTOMER")
+    public void createOrderWithExceptionTest() throws NotProducts {
+        // Configuración de datos de prueba para el caso de excepción
+        String errorMessage = "Add Products";
+        doThrow(new NotProducts(errorMessage)).when(orderService).createOrder(anyString());
+
+        // Llamar al método
+        ResponseEntity<?> response = orderController.createOrder();
+
+        // Verificar el resultado
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+    }
     @Test
     public void testGetLastOrder() {
         // Mock del contexto de seguridad

@@ -5,11 +5,16 @@ import static org.junit.Assert.*;
 import com.project.ecommerce.entities.Order;
 import com.project.ecommerce.persistence.impl.OrderDAOImpl;
 import com.project.ecommerce.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -78,11 +83,18 @@ public class OrderDAOImplTest {
 
     @Test
     public void findAllTest() {
+        // Preparar datos de prueba
         List<Order> expectedOrders = Arrays.asList(new Order(), new Order());
-        when(mockOrderRepository.findAll()).thenReturn(expectedOrders);
+        Pageable pageable = PageRequest.of(1, 5);
 
-        List<Order> result = orderDAO.findAll();
+        // Mock del repositorio
+        when(mockOrderRepository.findAll(pageable)).thenReturn(new PageImpl<>(expectedOrders, pageable, expectedOrders.size()));
 
+        // Llamar al método que quieres probar
+        Page<Order> resultPage = orderDAO.findAll(pageable);
+        List<Order> result = resultPage.getContent();
+
+        // Verificar el resultado
         assertEquals(expectedOrders, result);
     }
 

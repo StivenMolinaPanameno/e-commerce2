@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface IProductService {
     List<Product> findAll();
     Page<Product> findAllByEnabledTrue(Pageable pageable);
-    List<Product> findByCategory(String category);
+
     Optional<Product> findById(Long id);
     Optional<Product> findByNameAndEnabledTrue(String nameProduct);
     void disableById(Long id);

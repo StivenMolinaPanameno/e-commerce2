@@ -5,6 +5,7 @@ import com.project.ecommerce.entities.Category;
 import com.project.ecommerce.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -17,6 +18,7 @@ public class CategoryController {
     @Autowired
     ICategoryService categoryService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<?> saveCategory(@RequestBody CategoryDTO categoryDTO) throws URISyntaxException {
         if(categoryDTO.getName().isBlank()){
@@ -28,6 +30,7 @@ public class CategoryController {
                 .build());
         return  ResponseEntity.created(new URI("api/maker/save")).build();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO){
         Optional<Category> categoryOptional = categoryService.findById(id);
@@ -41,7 +44,7 @@ public class CategoryController {
         return ResponseEntity.notFound().build();
 
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/disableByBody/{id}")
     public ResponseEntity<?> updateAttribute(@PathVariable Long id, @RequestBody boolean newValue) {
         Optional<Category> categoryOptional = categoryService.findById(id);
@@ -54,6 +57,7 @@ public class CategoryController {
         }
         return ResponseEntity.notFound().build();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/disable/{id}")
     public ResponseEntity<?> enabled(@PathVariable Long id){
         Optional<Category> categoryOptional = categoryService.findById(id);
@@ -63,6 +67,7 @@ public class CategoryController {
         }
         return ResponseEntity.notFound().build();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/disableByName/{category}")
     public ResponseEntity<?> enabled(@PathVariable String category){
         Optional<Category> categoryOptional = categoryService.findByName(category);

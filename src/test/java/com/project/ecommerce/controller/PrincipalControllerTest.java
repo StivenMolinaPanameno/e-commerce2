@@ -3,6 +3,7 @@ package com.project.ecommerce.controller;
 import com.project.ecommerce.security.controller.PrincipalController;
 import com.project.ecommerce.security.controller.dto.CreateUserDTO;
 import com.project.ecommerce.security.entities.UserEntity;
+import com.project.ecommerce.security.repository.RoleRepository;
 import com.project.ecommerce.security.service.IUserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,9 @@ public class PrincipalControllerTest {
 
         @Mock
         private IUserService userService;
+
+        @Mock
+        RoleRepository roleRepository;
         @Mock
     PasswordEncoder passwordEncoder;
         @InjectMocks

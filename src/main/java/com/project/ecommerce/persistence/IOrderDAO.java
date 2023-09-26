@@ -1,6 +1,8 @@
 package com.project.ecommerce.persistence;
 
 import com.project.ecommerce.entities.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -13,7 +15,7 @@ public interface IOrderDAO {
     Optional<Order> findFirstByUserUsernameOrderByDateDesc(String username);
     Optional<Order> findLastActiveOrderByUsername(String username);
     void disableOrderById( Long orderId);
-    List<Order> findAll();
+    Page<Order> findAll(Pageable pageable);
     List<Order> findActiveOrdersByUsername(@Param("username") String username);
 
 }

@@ -53,6 +53,7 @@ public class CartControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
+
     @Test
     public void testCountByUser() {
         // Simula el recuento de productos en el carrito
